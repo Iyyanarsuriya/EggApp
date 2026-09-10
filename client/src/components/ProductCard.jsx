@@ -8,6 +8,10 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
 
+  const packPcs = parseInt(product.pack_size, 10) || 1;
+  const rawPieceRate = Number(product.price) / packPcs;
+  const perPieceRate = rawPieceRate % 1 === 0 ? rawPieceRate.toFixed(0) : rawPieceRate.toFixed(2);
+
   const handleAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -83,11 +87,14 @@ const ProductCard = ({ product }) => {
         {/* Footer info: Price & Actions (Buy Option before Add to Cart) */}
         <div className="flex items-center justify-between pt-3.5 border-t border-slate-100 gap-2">
           <div className="shrink-0">
-            <div className="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-slate-400">
-              Per Carton
+            <div className="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-amber-700">
+              Per Piece
             </div>
-            <div className="text-lg sm:text-xl font-extrabold text-dark font-heading">
-              ₹{Number(product.price).toFixed(0)}
+            <div className="text-lg sm:text-xl font-extrabold text-dark font-heading leading-tight">
+              ₹{perPieceRate} <span className="text-[10px] sm:text-xs font-semibold text-slate-400">/ pc</span>
+            </div>
+            <div className="text-[10px] text-slate-400 font-medium">
+              ₹{Number(product.price).toFixed(0)} ({product.pack_size})
             </div>
           </div>
 

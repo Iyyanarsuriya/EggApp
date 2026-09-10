@@ -66,6 +66,25 @@ export const AuthProvider = ({ children }) => {
     setUser(updatedUser);
   };
 
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalView, setAuthModalView] = useState('login'); // 'login' | 'signup'
+  const [authRedirectPath, setAuthRedirectPath] = useState(null);
+
+  const openAuthModal = (view = 'login', redirectPath = null) => {
+    setAuthModalView(view);
+    setAuthRedirectPath(redirectPath);
+    setAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setAuthModalOpen(false);
+    setAuthRedirectPath(null);
+  };
+
+  const switchAuthView = (view) => {
+    setAuthModalView(view);
+  };
+
   const value = {
     user,
     token,
@@ -75,7 +94,13 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    updateUser
+    updateUser,
+    authModalOpen,
+    authModalView,
+    authRedirectPath,
+    openAuthModal,
+    closeAuthModal,
+    switchAuthView
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

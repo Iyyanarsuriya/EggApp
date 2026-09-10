@@ -146,17 +146,35 @@ const ProductDetails = () => {
             </h1>
 
             {/* Price & Pack Size */}
-            <div className="flex items-baseline gap-3 sm:gap-4 flex-wrap mb-6 pb-6 border-b border-slate-200">
-              <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
-                ₹{Number(product.price).toFixed(0)}
-              </span>
-              <span className="text-xs sm:text-sm font-bold text-slate-600 bg-slate-100 px-3.5 py-1.5 rounded-full border border-slate-200">
-                Carton of {product.pack_size}
-              </span>
-              <span className={`text-xs sm:text-sm font-bold ml-auto ${product.stock > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                {product.stock > 0 ? `In Stock (${product.stock} available)` : 'Sold Out'}
-              </span>
-            </div>
+            {(() => {
+              const packPcs = parseInt(product.pack_size, 10) || 1;
+              const rawPieceRate = Number(product.price) / packPcs;
+              const perPieceRate = rawPieceRate % 1 === 0 ? rawPieceRate.toFixed(0) : rawPieceRate.toFixed(2);
+
+              return (
+                <div className="flex items-baseline gap-3 sm:gap-4 flex-wrap mb-6 pb-6 border-b border-slate-200">
+                  <div>
+                    <div className="text-[11px] sm:text-xs uppercase font-bold tracking-wider text-amber-700 mb-0.5">
+                      Per Piece Rate
+                    </div>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-heading">
+                        ₹{perPieceRate}
+                      </span>
+                      <span className="text-sm font-semibold text-slate-500">
+                        / piece
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs sm:text-sm font-bold text-slate-700 bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-full">
+                    Pack of {product.pack_size} • ₹{Number(product.price).toFixed(0)}
+                  </span>
+                  <span className={`text-xs sm:text-sm font-bold ml-auto ${product.stock > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                    {product.stock > 0 ? `In Stock (${product.stock} available)` : 'Sold Out'}
+                  </span>
+                </div>
+              );
+            })()}
 
             {/* Description */}
             <div className="mb-6 sm:mb-8">

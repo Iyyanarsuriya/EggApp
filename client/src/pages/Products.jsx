@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal } from 'lucide-react';
+
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
@@ -20,8 +20,6 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('featured');
 
   useEffect(() => {
     const categoryParam = searchParams.get('category');
@@ -35,9 +33,7 @@ const Products = () => {
       setLoading(true);
       try {
         const res = await api.getProducts({
-          category: selectedCategory,
-          search: searchQuery,
-          sort: sortBy
+          category: selectedCategory
         });
         if (res.success) {
           setProducts(res.products);
@@ -49,12 +45,8 @@ const Products = () => {
       }
     };
 
-    const timer = setTimeout(() => {
-      fetchProducts();
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [selectedCategory, searchQuery, sortBy]);
+    fetchProducts();
+  }, [selectedCategory]);
 
   const handleCategoryClick = (cat) => {
     setSelectedCategory(cat);
@@ -96,41 +88,7 @@ const Products = () => {
           </p>
         </div>
 
-        {/* Search & Sort Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          {/* Search Input */}
-          <div className="relative w-full sm:max-w-md">
-            <Search
-              size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-            <input
-              type="text"
-              placeholder="Search by variety, pack size, or feed..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-slate-200 rounded-full focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-xs"
-            />
-          </div>
 
-          {/* Sort Selector */}
-          <div className="flex items-center gap-2.5 self-start sm:self-auto">
-            <SlidersHorizontal size={18} className="text-slate-500" />
-            <span className="text-xs sm:text-sm font-semibold text-slate-500">
-              Sort by:
-            </span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 outline-none focus:border-primary transition-colors shadow-2xs cursor-pointer"
-            >
-              <option value="featured">Featured First</option>
-              <option value="rating">Highest Rated</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-            </select>
-          </div>
-        </div>
 
         {/* Category Filter Pills with Tab Egg Thumbnail Image */}
         <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-8 border-b border-slate-200/80 scrollbar-none">
@@ -184,7 +142,6 @@ const Products = () => {
             <button
               onClick={() => {
                 setSelectedCategory('All');
-                setSearchQuery('');
               }}
               className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-xs transition-all active:scale-95"
             >

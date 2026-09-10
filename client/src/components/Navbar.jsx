@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout, openAuthModal } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +16,6 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
-    navigate('/login');
   };
 
   const isActive = (path) => location.pathname === path;
@@ -188,18 +187,20 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('login')}
                   className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shadow-2xs"
                 >
                   Sign In
-                </Link>
-                <Link
-                  to="/register"
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('signup')}
                   className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-xs transition-colors"
                 >
                   Sign Up
-                </Link>
+                </button>
               </div>
             )}
 
@@ -259,12 +260,26 @@ const Navbar = () => {
 
           {!isAuthenticated && (
             <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-2 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openAuthModal('login');
+                }}
+                className="w-full text-center py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              >
                 Sign In
-              </Link>
-              <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-2 text-sm font-bold text-white bg-primary rounded-xl">
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openAuthModal('signup');
+                }}
+                className="w-full text-center py-2 text-sm font-bold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-xs transition-colors"
+              >
                 Sign Up
-              </Link>
+              </button>
             </div>
           )}
         </div>

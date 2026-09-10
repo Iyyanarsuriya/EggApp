@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext';
 import api from '../services/api';
 
 const Checkout = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, openAuthModal } = useAuth();
   const { cartItems, cartSubtotal, deliveryFee, grandTotal, clearCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
@@ -131,13 +131,13 @@ const Checkout = () => {
                 Sign in to use your saved addresses and track live orders.
               </div>
             </div>
-            <Link
-              to="/login"
-              state={{ redirect: '/checkout' }}
+            <button
+              type="button"
+              onClick={() => openAuthModal('login', '/checkout')}
               className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-800 border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm"
             >
               Sign In Now
-            </Link>
+            </button>
           </div>
         )}
 
