@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DollarSign, ShoppingBag, Users, AlertTriangle, Package, ArrowUpRight, TrendingUp, ShieldCheck } from 'lucide-react';
+import { DollarSign, ShoppingBag, Users, AlertTriangle, Package, ArrowUpRight, TrendingUp, ShieldCheck, Phone } from 'lucide-react';
 import api from '../services/api';
 import Loader from '../components/Loader';
 
@@ -70,10 +70,16 @@ const Dashboard = () => {
         {/* Admin Header & Nav Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
               <span className="badge badge-purple inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800">
                 <ShieldCheck size={14} /> Admin Headquarters
               </span>
+              <a
+                href="tel:9489761481"
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 transition-colors shadow-2xs"
+              >
+                <Phone size={12} className="text-amber-700" /> Helpline: 9489761481
+              </a>
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-dark tracking-tight font-heading">
               Egg Shop Operations Center

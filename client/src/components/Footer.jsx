@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, ShieldCheck, Truck, Clock, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Heart, ShieldCheck, Truck, Clock, Sparkles, CheckCircle2, Phone } from 'lucide-react';
 
 const Footer = () => {
   const [subscribed, setSubscribed] = useState(false);
@@ -94,6 +94,14 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold text-sm sm:text-base mb-4 font-heading">Customer Care</h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400">
+              <li>
+                <a
+                  href="tel:9489761481"
+                  className="inline-flex items-center gap-2 text-amber-300 font-bold hover:text-amber-200 transition-colors"
+                >
+                  <Phone size={14} /> +91 9489761481
+                </a>
+              </li>
               <li><Link to="/my-orders" className="hover:text-amber-300 transition-colors">Track Your Order</Link></li>
               <li><a href="#faq" className="hover:text-amber-300 transition-colors">Egg Storage & Shelf-Life</a></li>
               <li><a href="#farms" className="hover:text-amber-300 transition-colors">Our Partner Poultry Farms</a></li>

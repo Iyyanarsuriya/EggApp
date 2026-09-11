@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, LogOut, ShieldCheck, Menu, X, Sparkles, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, LogOut, ShieldCheck, Menu, X, Sparkles, ChevronDown, Phone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -23,9 +23,23 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
       {/* Top micro banner */}
-      <div className="bg-slate-900 text-amber-200 text-[11px] sm:text-xs py-1.5 px-3 sm:px-4 text-center font-medium flex items-center justify-center gap-1.5 tracking-tight">
-        <Sparkles size={14} className="text-amber-400 flex-shrink-0" />
-        <span className="truncate">100% Pure Egg Shop • Fresh Morning Harvest • Free Delivery Above 30 Eggs (30 முட்டைகளுக்கு மேல் இலவச டெலிவரி)</span>
+      <div className="bg-slate-900 text-amber-200 text-[11px] sm:text-xs py-1.5 px-3 sm:px-6 font-medium">
+        <div className="container mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 mx-auto sm:mx-0">
+            <Sparkles size={13} className="text-amber-400 flex-shrink-0" />
+            <span className="truncate">100% Pure Egg Shop • Fresh Morning Harvest • Free Delivery Above 30 Eggs</span>
+          </div>
+          <div className="flex items-center gap-2 mx-auto sm:mx-0">
+            <span className="text-slate-400 hidden xs:inline">Order Support:</span>
+            <a
+              href="tel:9489761481"
+              className="inline-flex items-center gap-1.5 font-bold text-white hover:text-amber-300 transition-colors bg-slate-800/90 hover:bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700/80 shadow-2xs"
+            >
+              <Phone size={12} className="text-amber-400 flex-shrink-0" />
+              <span>9489761481</span>
+            </a>
+          </div>
+        </div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -113,7 +127,17 @@ const Navbar = () => {
           </nav>
 
           {/* Action Controls */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            {/* Quick Call Button */}
+            <a
+              href="tel:9489761481"
+              title="Call Egg Haven Support: 9489761481"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold text-xs transition-colors shadow-2xs"
+            >
+              <Phone size={13} className="text-amber-700 flex-shrink-0" />
+              <span>9489761481</span>
+            </a>
+
             {/* Cart Trigger */}
             <Link
               to="/cart"
@@ -291,6 +315,18 @@ const Navbar = () => {
               </button>
             </div>
           )}
+
+          {/* Direct Mobile Contact Support */}
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+            <span className="font-medium">Direct Support & Orders:</span>
+            <a
+              href="tel:9489761481"
+              className="inline-flex items-center gap-1.5 font-bold text-amber-950 bg-amber-100 border border-amber-300 px-3 py-1.5 rounded-xl shadow-2xs hover:bg-amber-200 transition-colors"
+            >
+              <Phone size={13} className="text-amber-800" />
+              <span>9489761481</span>
+            </a>
+          </div>
         </div>
       )}
     </header>
