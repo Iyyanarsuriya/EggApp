@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Truck, Feather, Sun } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sun } from 'lucide-react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
+import DailyPriceCard from '../components/DailyPriceCard';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -14,7 +15,7 @@ const Home = () => {
       try {
         const res = await api.getProducts({ featured: true });
         if (res.success) {
-          setFeaturedProducts(res.products.slice(0, 4));
+          setFeaturedProducts(res.products);
         }
       } catch (err) {
         console.error('Error loading featured products:', err);
@@ -67,33 +68,8 @@ const Home = () => {
                 </Link>
               </div>
 
-              {/* Quick Metrics */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 border-t border-slate-200/80 mt-8 sm:mt-10">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-dark font-heading">
-                    24 hrs
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
-                    Harvest to Door
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-heading">
-                    0%
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
-                    Antibiotics & Hormones
-                  </div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-primary-dark font-heading">
-                    4.9 / 5
-                  </div>
-                  <div className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
-                    15k+ Happy Families
-                  </div>
-                </div>
-              </div>
+              {/* Live Everyday Egg Price (Managed by Admin) */}
+              <DailyPriceCard />
             </div>
 
             {/* Right Column Image & Floating Cards */}

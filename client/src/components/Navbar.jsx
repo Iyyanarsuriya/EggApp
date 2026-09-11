@@ -56,6 +56,12 @@ const Navbar = () => {
                   Dashboard
                 </Link>
                 <Link
+                  to="/admin/daily-prices"
+                  className={`transition-colors flex items-center gap-1.5 ${isActive('/admin/daily-prices') ? 'text-primary-dark font-bold' : 'text-slate-700 hover:text-primary-dark'}`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Live Rates
+                </Link>
+                <Link
                   to="/admin/products"
                   className={`transition-colors ${isActive('/admin/products') ? 'text-primary-dark font-bold' : 'text-slate-700 hover:text-primary-dark'}`}
                 >
@@ -223,6 +229,9 @@ const Navbar = () => {
             <>
               <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-primary-dark py-1.5">
                 Dashboard Overview
+              </Link>
+              <Link to="/admin/daily-prices" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-slate-700 py-1.5 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Live Daily Rates
               </Link>
               <Link to="/admin/products" onClick={() => setMobileMenuOpen(false)} className="text-sm font-semibold text-slate-700 py-1.5">
                 Manage Inventory

@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
+const dailyPriceRoutes = require('./routes/dailyPriceRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -35,7 +36,8 @@ app.get('/', (req, res) => {
       auth: '/api/auth',
       products: '/api/products',
       orders: '/api/orders',
-      users: '/api/users'
+      users: '/api/users',
+      dailyPrices: '/api/daily-prices'
     }
   });
 });
@@ -45,6 +47,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/daily-prices', dailyPriceRoutes);
 
 // Error Handling
 app.use(notFound);

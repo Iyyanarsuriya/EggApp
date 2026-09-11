@@ -16,6 +16,7 @@ import Profile from '../pages/Profile';
 
 // Admin Pages
 import Dashboard from '../admin/Dashboard';
+import DailyPrices from '../admin/DailyPrices';
 import AdminProducts from '../admin/Products';
 import AdminOrders from '../admin/Orders';
 import AdminUsers from '../admin/Users';
@@ -116,6 +117,14 @@ const AppRoutes = () => {
         element={
           <AdminRoute>
             <Dashboard />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/daily-prices"
+        element={
+          <AdminRoute>
+            <DailyPrices />
           </AdminRoute>
         }
       />

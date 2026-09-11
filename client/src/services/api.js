@@ -69,7 +69,11 @@ export const api = {
 
   // Users (Admin)
   getAllUsers: () => request('/users'),
-  updateUserRole: (id, role) => request(`/users/${id}/role`, { method: 'PUT', body: { role } })
+  updateUserRole: (id, role) => request(`/users/${id}/role`, { method: 'PUT', body: { role } }),
+
+  // Daily Egg Prices
+  getDailyPrices: () => request('/daily-prices'),
+  updateDailyPrices: (priceData) => request('/daily-prices', { method: 'PUT', body: priceData })
 };
 
 export default api;

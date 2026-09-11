@@ -14,15 +14,17 @@ const Dashboard = () => {
   });
 
   const [recentOrders, setRecentOrders] = useState([]);
+  const [dailyPrices, setDailyPrices] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [ordersRes, productsRes, usersRes] = await Promise.all([
+        const [ordersRes, productsRes, usersRes, dailyRes] = await Promise.all([
           api.getAllOrders(),
           api.getProducts(),
-          api.getAllUsers()
+          api.getAllUsers(),
+          api.getDailyPrices().catch(() => ({ success: false }))
         ]);
 
         const orders = ordersRes.orders || [];
@@ -41,6 +43,9 @@ const Dashboard = () => {
         });
 
         setRecentOrders(orders.slice(0, 5));
+        if (dailyRes && dailyRes.success) {
+          setDailyPrices(dailyRes.dailyPrices);
+        }
       } catch (err) {
         console.error('Error loading admin dashboard metrics:', err);
       } finally {
@@ -79,6 +84,9 @@ const Dashboard = () => {
           <div className="flex items-center gap-2.5 overflow-x-auto pb-1 max-w-full">
             <Link to="/admin" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-primary text-white shadow-sm hover:bg-primary-hover transition-colors whitespace-nowrap">
               Dashboard Overview
+            </Link>
+            <Link to="/admin/daily-prices" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Daily Live Rates
             </Link>
             <Link to="/admin/products" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap">
               Manage Inventory
@@ -181,6 +189,59 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Daily Live Egg Prices Management Card */}
+        {dailyPrices && (
+          <div className="bg-gradient-to-r from-amber-500/10 via-amber-100/40 to-amber-50/50 border border-amber-200/80 rounded-2xl p-5 sm:p-7 shadow-sm mb-10">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-dark font-heading">
+                    Today's Live Egg Rates / இன்றைய சந்தை விலை
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Live on homepage • Session: {dailyPrices.date} • Trend: {dailyPrices.market_trend}
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                to="/admin/daily-prices"
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold bg-primary hover:bg-primary-hover text-white rounded-xl shadow-xs transition-colors"
+              >
+                Update Today's Rates <ArrowUpRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {(dailyPrices.items || []).map((item) => (
+                <div key={item.id} className="bg-white p-3.5 rounded-xl border border-amber-200/60 shadow-xs">
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="text-base">{item.icon}</span>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                      item.trend === 'up' ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' :
+                      item.trend === 'down' ? 'text-rose-700 bg-rose-50 border border-rose-200' : 'text-slate-600 bg-slate-100'
+                    }`}>
+                      {item.trend === 'up' ? `▲ ${item.change}` : item.trend === 'down' ? `▼ ${item.change}` : 'Steady'}
+                    </span>
+                  </div>
+                  <div className="font-bold text-xs sm:text-sm text-dark line-clamp-1">{item.name}</div>
+                  <div className="text-[11px] text-slate-400">{item.tamil_name}</div>
+                  <div className="mt-2 pt-1 border-t border-slate-100 flex items-baseline justify-between">
+                    <span className="text-base font-extrabold text-primary-dark font-heading">
+                      ₹{Number(item.price_per_piece).toFixed(2)}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium">Tray: ₹{Math.round(item.price_per_tray || item.price_per_piece * 30)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Recent Orders Table */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-8 shadow-sm">

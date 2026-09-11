@@ -69,7 +69,10 @@ const AdminOrders = () => {
 
           <div className="flex items-center gap-2.5 overflow-x-auto pb-1 max-w-full">
             <Link to="/admin" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap">
-              Dashboard Overview
+              Dashboard
+            </Link>
+            <Link to="/admin/daily-prices" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Live Rates
             </Link>
             <Link to="/admin/products" className="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap">
               Manage Inventory

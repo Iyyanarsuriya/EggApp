@@ -190,7 +190,65 @@ const memoryStore = {
       quantity: 1,
       image_url: '/images/quail_egg.jpg'
     }
-  ]
+  ],
+  dailyPrices: {
+    id: 1,
+    date: new Date().toISOString().split('T')[0],
+    note: 'Namakkal NECC & TN Farm Gate Daily Benchmark Wholesale & Retail Rates',
+    last_updated: new Date().toISOString(),
+    updated_by: 'Egg Shop Admin',
+    market_trend: 'Rising',
+    items: [
+      {
+        id: 'white_egg',
+        name: 'Farm Fresh White Egg',
+        tamil_name: 'பண்ணை வெள்ளை முட்டை',
+        category: 'White Egg',
+        price_per_piece: 5.60,
+        price_per_tray: 168.00,
+        tray_size: '30 pcs',
+        change: '+0.10',
+        trend: 'up',
+        icon: '🥚'
+      },
+      {
+        id: 'country_egg',
+        name: 'Heritage Country Hen (Nattu Kozhi)',
+        tamil_name: 'நாட்டுக் கோழி முட்டை',
+        category: 'Country Hen',
+        price_per_piece: 13.00,
+        price_per_tray: 390.00,
+        tray_size: '30 pcs',
+        change: '0.00',
+        trend: 'steady',
+        icon: '🐓'
+      },
+      {
+        id: 'duck_egg',
+        name: 'Farm Fresh Duck Egg',
+        tamil_name: 'பண்ணை வாத்து முட்டை',
+        category: 'Duck Egg',
+        price_per_piece: 11.00,
+        price_per_tray: 330.00,
+        tray_size: '30 pcs',
+        change: '+0.20',
+        trend: 'up',
+        icon: '🦆'
+      },
+      {
+        id: 'quail_egg',
+        name: 'Gourmet Quail Egg',
+        tamil_name: 'சத்து நிறைந்த காடை முட்டை',
+        category: 'Quail Egg',
+        price_per_piece: 2.80,
+        price_per_tray: 84.00,
+        tray_size: '30 pcs',
+        change: '0.00',
+        trend: 'steady',
+        icon: '🪺'
+      }
+    ]
+  }
 };
 
 async function initDB() {
