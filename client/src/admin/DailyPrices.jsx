@@ -27,6 +27,19 @@ const DailyPrices = () => {
   const [lastUpdated, setLastUpdated] = useState('');
   const [updatedBy, setUpdatedBy] = useState('');
 
+  const getCategorySortRank = (item) => {
+    const text = `${item?.category || ''} ${item?.name || ''}`.toLowerCase();
+    if (text.includes('white')) return 1;
+    if (text.includes('country') || text.includes('nattu')) return 2;
+    if (text.includes('duck')) return 3;
+    if (text.includes('quail') || text.includes('kaada') || text.includes('kada')) return 4;
+    return 5;
+  };
+
+  const sortItems = (itemList = []) => {
+    return [...itemList].sort((a, b) => getCategorySortRank(a) - getCategorySortRank(b));
+  };
+
   const fetchRates = async () => {
     try {
       setLoading(true);
@@ -36,7 +49,7 @@ const DailyPrices = () => {
         setDate(d.date || new Date().toISOString().split('T')[0]);
         setNote(d.note || '');
         setMarketTrend(d.market_trend || 'Steady');
-        setItems(d.items || []);
+        setItems(sortItems(d.items || []));
         setLastUpdated(d.last_updated || '');
         setUpdatedBy(d.updated_by || '');
       }
@@ -163,7 +176,7 @@ const DailyPrices = () => {
           setDate(new Date().toISOString().split('T')[0]);
           setNote('Live Farm Gate Wholesale & Retail Benchmark Rates');
           setMarketTrend('Steady');
-          setItems(derivedItems);
+          setItems(sortItems(derivedItems));
         }
       } catch (err) {
         console.error('Error resetting from products:', err);

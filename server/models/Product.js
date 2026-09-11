@@ -1,6 +1,15 @@
 const db = require('../config/db');
 
 class Product {
+  static getCategorySortRank(category = '', name = '') {
+    const text = `${category} ${name}`.toLowerCase();
+    if (text.includes('white')) return 1;
+    if (text.includes('country') || text.includes('nattu')) return 2;
+    if (text.includes('duck')) return 3;
+    if (text.includes('quail') || text.includes('kaada') || text.includes('kada')) return 4;
+    return 5;
+  }
+
   static async findAll({ category, search, featured, sort } = {}) {
     if (db.isConnected) {
       let sql = 'SELECT * FROM products WHERE 1=1';
@@ -27,7 +36,14 @@ class Product {
       } else if (sort === 'rating') {
         sql += ' ORDER BY rating DESC';
       } else {
-        sql += ' ORDER BY id ASC';
+        sql += ` ORDER BY 
+          CASE 
+            WHEN LOWER(category) LIKE '%white%' OR LOWER(name) LIKE '%white%' THEN 1
+            WHEN LOWER(category) LIKE '%country%' OR LOWER(name) LIKE '%country%' OR LOWER(name) LIKE '%nattu%' THEN 2
+            WHEN LOWER(category) LIKE '%duck%' OR LOWER(name) LIKE '%duck%' THEN 3
+            WHEN LOWER(category) LIKE '%quail%' OR LOWER(name) LIKE '%quail%' THEN 4
+            ELSE 5 
+          END ASC, id ASC`;
       }
 
       const [rows] = await db.pool.execute(sql, params);
@@ -58,7 +74,12 @@ class Product {
     } else if (sort === 'rating') {
       results.sort((a, b) => Number(b.rating) - Number(a.rating));
     } else {
-      results.sort((a, b) => a.id - b.id);
+      results.sort((a, b) => {
+        const rankA = this.getCategorySortRank(a.category, a.name);
+        const rankB = this.getCategorySortRank(b.category, b.name);
+        if (rankA !== rankB) return rankA - rankB;
+        return a.id - b.id;
+      });
     }
 
     return results;

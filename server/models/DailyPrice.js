@@ -11,6 +11,24 @@ class DailyPrice {
     return '🥚';
   }
 
+  static getCategorySortRank(category = '', name = '') {
+    const text = `${category} ${name}`.toLowerCase();
+    if (text.includes('white')) return 1;
+    if (text.includes('country') || text.includes('nattu')) return 2;
+    if (text.includes('duck')) return 3;
+    if (text.includes('quail') || text.includes('kaada') || text.includes('kada')) return 4;
+    return 5;
+  }
+
+  static sortItems(items = []) {
+    if (!Array.isArray(items)) return [];
+    return [...items].sort((a, b) => {
+      const rankA = this.getCategorySortRank(a.category, a.name);
+      const rankB = this.getCategorySortRank(b.category, b.name);
+      return rankA - rankB;
+    });
+  }
+
   static async generateFromProducts() {
     const products = await Product.findAll();
 
@@ -45,6 +63,8 @@ class DailyPrice {
       };
     });
 
+    const sortedItems = this.sortItems(items);
+
     return {
       id: 1,
       date: new Date().toISOString().split('T')[0],
@@ -52,7 +72,7 @@ class DailyPrice {
       last_updated: new Date().toISOString(),
       updated_by: 'Database Sync',
       market_trend: 'Steady',
-      items
+      items: sortedItems
     };
   }
 
@@ -85,12 +105,13 @@ class DailyPrice {
         const [rows] = await db.pool.execute('SELECT * FROM daily_prices ORDER BY id DESC LIMIT 1');
         if (rows && rows.length > 0) {
           const row = rows[0];
+          const rawItems = typeof row.items === 'string' ? JSON.parse(row.items) : row.items;
           return {
             id: row.id,
             date: row.date,
             note: row.note,
             market_trend: row.market_trend,
-            items: typeof row.items === 'string' ? JSON.parse(row.items) : row.items,
+            items: this.sortItems(rawItems),
             updated_by: row.updated_by,
             last_updated: row.updated_at || row.created_at
           };
@@ -101,6 +122,9 @@ class DailyPrice {
     }
 
     if (db.store.dailyPrices) {
+      if (Array.isArray(db.store.dailyPrices.items)) {
+        db.store.dailyPrices.items = this.sortItems(db.store.dailyPrices.items);
+      }
       return db.store.dailyPrices;
     }
 
@@ -113,13 +137,14 @@ class DailyPrice {
   static async update(payload, adminUser = null) {
     const todayStr = payload.date || new Date().toISOString().split('T')[0];
     const updaterName = adminUser?.name || 'Egg Shop Admin';
+    const sortedItems = this.sortItems(payload.items || []);
 
     const updatedData = {
       id: db.store.dailyPrices?.id || 1,
       date: todayStr,
       note: payload.note || 'Live Farm Gate Wholesale & Retail Rates',
       market_trend: payload.market_trend || 'Steady',
-      items: payload.items || [],
+      items: sortedItems,
       updated_by: updaterName,
       last_updated: new Date().toISOString()
     };

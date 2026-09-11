@@ -102,12 +102,10 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `cit
 
 -- Products (White Egg, Country Egg, Duck Egg, Quail Egg with English & Tamil names)
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `pack_size`, `category`, `stock`, `rating`, `num_reviews`, `image_url`, `is_featured`) VALUES
-(1, 'Country Hen Eggs | நாட்டுக் கோழி முட்டை', 'Authentic heritage free-range country chicken eggs (Nattu Kozhi). Rich in protein, deep orange yolks, and traditional natural nourishment. தூய நாட்டுக் கோழி முட்டை.', 180.00, '10 pcs', 'Country Hen', 65, 5.0, 114, '/images/country_egg.png', 1),
-(2, 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை', 'Daily collected farm fresh white table eggs. Graded, washed, UV-sanitized, and high in clean protein for your daily fitness and breakfast. புதிய பண்ணை வெள்ளைக் கோழி முட்டை.', 90.00, '12 pcs', 'White Egg', 120, 4.8, 98, '/images/white_egg.png', 1),
+(1, 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை', 'Daily collected farm fresh white table eggs. Graded, washed, UV-sanitized, and high in clean protein for your daily fitness and breakfast. புதிய பண்ணை வெள்ளைக் கோழி முட்டை.', 90.00, '12 pcs', 'White Egg', 120, 4.8, 98, '/images/white_egg.png', 1),
+(2, 'Country Hen Eggs | நாட்டுக் கோழி முட்டை', 'Authentic heritage free-range country chicken eggs (Nattu Kozhi). Rich in protein, deep orange yolks, and traditional natural nourishment. தூய நாட்டுக் கோழி முட்டை.', 180.00, '10 pcs', 'Country Hen', 65, 5.0, 114, '/images/country_egg.png', 1),
 (3, 'Heritage Duck Eggs | பண்ணை வாத்து முட்டை', 'Large, rich, and creamy farm fresh duck eggs. Prized for baking, fluffy omelettes, and rich micronutrients. சுவையான இயற்கை பண்ணை வாத்து முட்டை.', 210.00, '6 pcs', 'Duck Egg', 40, 4.8, 42, '/images/duck_egg.jpg', 1),
-(4, 'Gourmet Quail Eggs | சத்து நிறைந்த காடை முட்டை', 'Healthy, nutrient-dense speckled quail eggs. Packed with iron, calcium, and vitamin B12. உடலுக்கு அதிக ஊட்டச்சத்து தரும் புதிய காடை முட்டை.', 120.00, '18 pcs', 'Quail Egg', 55, 4.9, 63, '/images/quail_egg.jpg', 1),
-(5, 'Country Hen Eggs Jumbo Tray | நாட்டுக் கோழி முட்டை (30 எண்ணிக்கை)', 'Wholesale monthly value tray of 30 authentic country hen eggs direct from cooperative farms. 30 நாட்டு முட்டைகள் கொண்ட சேமிப்புப் பெட்டி.', 490.00, '30 pcs', 'Country Hen', 30, 5.0, 85, '/images/country_egg.png', 1),
-(6, 'Farm White Eggs Value Tray | வெள்ளை முட்டை (30 எண்ணிக்கை)', 'Economical 30-egg tray of fresh white eggs for families, gyms, and home baking. 30 வெள்ளை முட்டைகள் கொண்ட சேமிப்புப் பெட்டி.', 220.00, '30 pcs', 'White Egg', 75, 4.7, 76, '/images/white_egg.png', 0);
+(4, 'Gourmet Quail Eggs | சத்து நிறைந்த காடை முட்டை', 'Healthy, nutrient-dense speckled quail eggs. Packed with iron, calcium, and vitamin B12. உடலுக்கு அதிக ஊட்டச்சத்து தரும் புதிய காடை முட்டை.', 120.00, '18 pcs', 'Quail Egg', 55, 4.9, 63, '/images/quail_egg.jpg', 1);
 
 -- Orders (Values in Indian Rupees ₹)
 INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `shipping_address`, `city`, `postal_code`, `phone`, `payment_method`, `payment_status`, `order_status`, `delivery_slot`, `notes`) VALUES
@@ -116,7 +114,7 @@ INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `shipping_address`, `city
 
 -- Order Items
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `name`, `price`, `quantity`, `image_url`) VALUES
-(1, 1, 1, 'Country Hen Eggs | நாட்டுக் கோழி முட்டை', 180.00, 1, '/images/country_egg.png'),
+(1, 1, 2, 'Country Hen Eggs | நாட்டுக் கோழி முட்டை', 180.00, 1, '/images/country_egg.png'),
 (2, 1, 3, 'Heritage Duck Eggs | பண்ணை வாத்து முட்டை', 210.00, 1, '/images/duck_egg.jpg'),
-(3, 2, 2, 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை', 90.00, 1, '/images/white_egg.png'),
+(3, 2, 1, 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை', 90.00, 1, '/images/white_egg.png'),
 (4, 2, 4, 'Gourmet Quail Eggs | சத்து நிறைந்த காடை முட்டை', 120.00, 1, '/images/quail_egg.jpg');

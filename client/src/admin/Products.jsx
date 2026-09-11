@@ -5,8 +5,8 @@ import api from '../services/api';
 import Loader from '../components/Loader';
 
 const categories = [
-  'Country Hen',
   'White Egg',
+  'Country Hen',
   'Duck Egg',
   'Quail Egg'
 ];

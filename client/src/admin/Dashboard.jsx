@@ -218,7 +218,17 @@ const Dashboard = () => {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {(dailyPrices.items || []).map((item) => (
+              {[...(dailyPrices.items || [])].sort((a, b) => {
+                const getRank = (item) => {
+                  const text = `${item?.category || ''} ${item?.name || ''}`.toLowerCase();
+                  if (text.includes('white')) return 1;
+                  if (text.includes('country') || text.includes('nattu')) return 2;
+                  if (text.includes('duck')) return 3;
+                  if (text.includes('quail') || text.includes('kaada') || text.includes('kada')) return 4;
+                  return 5;
+                };
+                return getRank(a) - getRank(b);
+              }).map((item) => (
                 <div key={item.id} className="bg-white p-3.5 rounded-xl border border-amber-200/60 shadow-xs">
                   <div className="flex items-center justify-between text-xs mb-1">
                     <span className="text-base">{item.icon}</span>

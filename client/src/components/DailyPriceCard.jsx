@@ -78,7 +78,16 @@ const DailyPriceCard = () => {
     );
   }
 
-  const items = dailyData?.items || [];
+  const getCategorySortRank = (item) => {
+    const text = `${item.category || ''} ${item.name || ''}`.toLowerCase();
+    if (text.includes('white')) return 1;
+    if (text.includes('country') || text.includes('nattu')) return 2;
+    if (text.includes('duck')) return 3;
+    if (text.includes('quail') || text.includes('kaada') || text.includes('kada')) return 4;
+    return 5;
+  };
+
+  const items = [...(dailyData?.items || [])].sort((a, b) => getCategorySortRank(a) - getCategorySortRank(b));
 
   return (
     <div className="pt-6 sm:pt-8 border-t border-slate-200/80 mt-8 sm:mt-10">

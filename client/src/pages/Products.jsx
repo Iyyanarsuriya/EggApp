@@ -111,8 +111,17 @@ const Products = () => {
       }
     ];
 
-    // Get unique categories found in the database
-    const dbCategories = Object.keys(counts);
+    // Get unique categories found in the database ordered by priority
+    const getCatRank = (cat = '') => {
+      const c = cat.toLowerCase();
+      if (c.includes('white')) return 1;
+      if (c.includes('country') || c.includes('nattu')) return 2;
+      if (c.includes('duck')) return 3;
+      if (c.includes('quail') || c.includes('kaada') || c.includes('kada')) return 4;
+      return 5;
+    };
+
+    const dbCategories = Object.keys(counts).sort((a, b) => getCatRank(a) - getCatRank(b));
     dbCategories.forEach((cat) => {
       const meta = categoryMeta[cat] || {
         label: cat,

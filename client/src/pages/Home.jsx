@@ -27,8 +27,8 @@ const Home = () => {
   }, []);
 
   const categories = [
-    { name: 'Country Hen', label: 'Country Egg', tamil: 'நாட்டுக் கோழி முட்டை', desc: '100% Free-Range Nattu Kozhi', icon: '🐓', count: '10 & 30 Packs' },
     { name: 'White Egg', label: 'White Egg', tamil: 'வெள்ளைக் கோழி முட்டை', desc: 'Fresh Daily Farm Table Protein', icon: '🥚', count: '12 & 30 Packs' },
+    { name: 'Country Hen', label: 'Country Egg', tamil: 'நாட்டுக் கோழி முட்டை', desc: '100% Free-Range Nattu Kozhi', icon: '🐓', count: '10 & 30 Packs' },
     { name: 'Duck Egg', label: 'Duck Egg', tamil: 'பண்ணை வாத்து முட்டை', desc: 'Rich & Creamy Gourmet Taste', icon: '🦆', count: '6 Pcs Carton' },
     { name: 'Quail Egg', label: 'Quail Egg', tamil: 'சத்து நிறைந்த காடை முட்டை', desc: 'High Mineral Superfood', icon: '🪺', count: '18 Pcs Pack' }
   ];

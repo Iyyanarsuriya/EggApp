@@ -38,20 +38,6 @@ const memoryStore = {
   products: [
     {
       id: 1,
-      name: 'Country Hen Eggs | நாட்டுக் கோழி முட்டை',
-      description: 'Authentic heritage free-range country chicken eggs (Nattu Kozhi). Rich in protein, deep orange yolks, and traditional natural nourishment. தூய நாட்டுக் கோழி முட்டை.',
-      price: 180.00,
-      pack_size: '10 pcs',
-      category: 'Country Hen',
-      stock: 65,
-      rating: 5.0,
-      num_reviews: 114,
-      image_url: '/images/country_egg.png',
-      is_featured: 1,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 2,
       name: 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை',
       description: 'Daily collected farm fresh white table eggs. Graded, washed, UV-sanitized, and high in clean protein for your daily fitness and breakfast. புதிய பண்ணை வெள்ளைக் கோழி முட்டை.',
       price: 90.00,
@@ -61,6 +47,20 @@ const memoryStore = {
       rating: 4.8,
       num_reviews: 98,
       image_url: '/images/white_egg.png',
+      is_featured: 1,
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 2,
+      name: 'Country Hen Eggs | நாட்டுக் கோழி முட்டை',
+      description: 'Authentic heritage free-range country chicken eggs (Nattu Kozhi). Rich in protein, deep orange yolks, and traditional natural nourishment. தூய நாட்டுக் கோழி முட்டை.',
+      price: 180.00,
+      pack_size: '10 pcs',
+      category: 'Country Hen',
+      stock: 65,
+      rating: 5.0,
+      num_reviews: 114,
+      image_url: '/images/country_egg.png',
       is_featured: 1,
       created_at: new Date().toISOString()
     },
@@ -90,34 +90,6 @@ const memoryStore = {
       num_reviews: 63,
       image_url: '/images/quail_egg.jpg',
       is_featured: 1,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 5,
-      name: 'Country Hen Eggs Jumbo Tray | நாட்டுக் கோழி முட்டை (30 எண்ணிக்கை)',
-      description: 'Wholesale monthly value tray of 30 authentic country hen eggs direct from cooperative farms. 30 நாட்டு முட்டைகள் கொண்ட சேமிப்புப் பெட்டி.',
-      price: 490.00,
-      pack_size: '30 pcs',
-      category: 'Country Hen',
-      stock: 30,
-      rating: 5.0,
-      num_reviews: 85,
-      image_url: '/images/country_egg.png',
-      is_featured: 1,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 6,
-      name: 'Farm White Eggs Value Tray | வெள்ளை முட்டை (30 எண்ணிக்கை)',
-      description: 'Economical 30-egg tray of fresh white eggs for families, gyms, and home baking. 30 வெள்ளை முட்டைகள் கொண்ட சேமிப்புப் பெட்டி.',
-      price: 220.00,
-      pack_size: '30 pcs',
-      category: 'White Egg',
-      stock: 75,
-      rating: 4.7,
-      num_reviews: 76,
-      image_url: '/images/white_egg.png',
-      is_featured: 0,
       created_at: new Date().toISOString()
     }
   ],
@@ -157,7 +129,7 @@ const memoryStore = {
     {
       id: 1,
       order_id: 1,
-      product_id: 1,
+      product_id: 2,
       name: 'Country Hen Eggs | நாட்டுக் கோழி முட்டை',
       price: 180.00,
       quantity: 1,
@@ -175,7 +147,7 @@ const memoryStore = {
     {
       id: 3,
       order_id: 2,
-      product_id: 2,
+      product_id: 1,
       name: 'Farm Fresh White Eggs | பண்ணை வெள்ளை முட்டை',
       price: 90.00,
       quantity: 1,
