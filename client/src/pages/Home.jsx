@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Sun } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sun, Feather, Truck } from 'lucide-react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';

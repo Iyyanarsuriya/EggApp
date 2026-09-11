@@ -1,64 +1,58 @@
 const db = require('../config/db');
+const Product = require('./Product');
 
 class DailyPrice {
-  static defaultData() {
+  static getCategoryIcon(category = '') {
+    const cat = category.toLowerCase();
+    if (cat.includes('country') || cat.includes('nattu')) return '🐓';
+    if (cat.includes('white')) return '🥚';
+    if (cat.includes('duck')) return '🦆';
+    if (cat.includes('quail')) return '🪺';
+    return '🥚';
+  }
+
+  static async generateFromProducts() {
+    const products = await Product.findAll();
+
+    // Group by category to derive live baseline rates from active database inventory
+    const categoryMap = new Map();
+    products.forEach((p) => {
+      if (!categoryMap.has(p.category)) {
+        categoryMap.set(p.category, p);
+      }
+    });
+
+    const items = Array.from(categoryMap.values()).map((p) => {
+      const packPcs = parseInt(p.pack_size, 10) || 1;
+      const pieceRate = Number((Number(p.price) / packPcs).toFixed(2));
+      const trayRate = Math.round(pieceRate * 30);
+      const nameParts = p.name.split('|');
+      const englishName = nameParts[0]?.trim() || p.name;
+      const tamilName = nameParts[1]?.trim() || '';
+
+      return {
+        id: `egg_${p.id}`,
+        product_id: p.id,
+        name: englishName,
+        tamil_name: tamilName,
+        category: p.category,
+        price_per_piece: pieceRate,
+        price_per_tray: trayRate,
+        tray_size: '30 pcs',
+        change: '0.00',
+        trend: 'steady',
+        icon: this.getCategoryIcon(p.category)
+      };
+    });
+
     return {
       id: 1,
       date: new Date().toISOString().split('T')[0],
-      note: 'Namakkal NECC & TN Farm Gate Daily Benchmark Wholesale & Retail Rates',
+      note: 'Live Farm Gate Wholesale & Retail Benchmark Rates',
       last_updated: new Date().toISOString(),
-      updated_by: 'Egg Shop Admin',
-      market_trend: 'Rising',
-      items: [
-        {
-          id: 'white_egg',
-          name: 'Farm Fresh White Egg',
-          tamil_name: 'பண்ணை வெள்ளை முட்டை',
-          category: 'White Egg',
-          price_per_piece: 5.60,
-          price_per_tray: 168.00,
-          tray_size: '30 pcs',
-          change: '+0.10',
-          trend: 'up',
-          icon: '🥚'
-        },
-        {
-          id: 'country_egg',
-          name: 'Heritage Country Hen (Nattu Kozhi)',
-          tamil_name: 'நாட்டுக் கோழி முட்டை',
-          category: 'Country Hen',
-          price_per_piece: 13.00,
-          price_per_tray: 390.00,
-          tray_size: '30 pcs',
-          change: '0.00',
-          trend: 'steady',
-          icon: '🐓'
-        },
-        {
-          id: 'duck_egg',
-          name: 'Farm Fresh Duck Egg',
-          tamil_name: 'பண்ணை வாத்து முட்டை',
-          category: 'Duck Egg',
-          price_per_piece: 11.00,
-          price_per_tray: 330.00,
-          tray_size: '30 pcs',
-          change: '+0.20',
-          trend: 'up',
-          icon: '🦆'
-        },
-        {
-          id: 'quail_egg',
-          name: 'Gourmet Quail Egg',
-          tamil_name: 'சத்து நிறைந்த காடை முட்டை',
-          category: 'Quail Egg',
-          price_per_piece: 2.80,
-          price_per_tray: 84.00,
-          tray_size: '30 pcs',
-          change: '0.00',
-          trend: 'steady',
-          icon: '🪺'
-        }
-      ]
+      updated_by: 'Database Sync',
+      market_trend: 'Steady',
+      items
     };
   }
 
@@ -106,10 +100,14 @@ class DailyPrice {
       }
     }
 
-    if (!db.store.dailyPrices) {
-      db.store.dailyPrices = this.defaultData();
+    if (db.store.dailyPrices) {
+      return db.store.dailyPrices;
     }
-    return db.store.dailyPrices;
+
+    // Derive automatically from real database products instead of static mock numbers
+    const generated = await this.generateFromProducts();
+    db.store.dailyPrices = generated;
+    return generated;
   }
 
   static async update(payload, adminUser = null) {
@@ -119,9 +117,9 @@ class DailyPrice {
     const updatedData = {
       id: db.store.dailyPrices?.id || 1,
       date: todayStr,
-      note: payload.note || 'Namakkal NECC & TN Farm Gate Daily Benchmark Wholesale & Retail Rates',
+      note: payload.note || 'Live Farm Gate Wholesale & Retail Rates',
       market_trend: payload.market_trend || 'Steady',
-      items: payload.items || (db.store.dailyPrices ? db.store.dailyPrices.items : this.defaultData().items),
+      items: payload.items || [],
       updated_by: updaterName,
       last_updated: new Date().toISOString()
     };

@@ -122,61 +122,54 @@ const DailyPrices = () => {
     }
   };
 
-  const handleResetDefaults = () => {
-    if (window.confirm('Reset values to standard NECC wholesale rates?')) {
-      setDate(new Date().toISOString().split('T')[0]);
-      setNote('Namakkal NECC & TN Farm Gate Daily Benchmark Wholesale & Retail Rates');
-      setMarketTrend('Rising');
-      setItems([
-        {
-          id: 'white_egg',
-          name: 'Farm Fresh White Egg',
-          tamil_name: 'பண்ணை வெள்ளை முட்டை',
-          category: 'White Egg',
-          price_per_piece: 5.60,
-          price_per_tray: 168.00,
-          tray_size: '30 pcs',
-          change: '+0.10',
-          trend: 'up',
-          icon: '🥚'
-        },
-        {
-          id: 'country_egg',
-          name: 'Heritage Country Hen (Nattu Kozhi)',
-          tamil_name: 'நாட்டுக் கோழி முட்டை',
-          category: 'Country Hen',
-          price_per_piece: 13.00,
-          price_per_tray: 390.00,
-          tray_size: '30 pcs',
-          change: '0.00',
-          trend: 'steady',
-          icon: '🐓'
-        },
-        {
-          id: 'duck_egg',
-          name: 'Farm Fresh Duck Egg',
-          tamil_name: 'பண்ணை வாத்து முட்டை',
-          category: 'Duck Egg',
-          price_per_piece: 11.00,
-          price_per_tray: 330.00,
-          tray_size: '30 pcs',
-          change: '+0.20',
-          trend: 'up',
-          icon: '🦆'
-        },
-        {
-          id: 'quail_egg',
-          name: 'Gourmet Quail Egg',
-          tamil_name: 'சத்து நிறைந்த காடை முட்டை',
-          category: 'Quail Egg',
-          price_per_piece: 2.80,
-          price_per_tray: 84.00,
-          tray_size: '30 pcs',
-          change: '0.00',
-          trend: 'steady',
-          icon: '🪺'
+  const handleResetDefaults = async () => {
+    if (window.confirm('Sync rates directly from database products catalog?')) {
+      try {
+        setLoading(true);
+        const res = await api.getProducts();
+        if (res.success && res.products) {
+          const categoryMap = new Map();
+          res.products.forEach((p) => {
+            if (!categoryMap.has(p.category)) {
+              categoryMap.set(p.category, p);
+            }
+          });
+
+          const derivedItems = Array.from(categoryMap.values()).map((p) => {
+            const packPcs = parseInt(p.pack_size, 10) || 1;
+            const pieceRate = Number((Number(p.price) / packPcs).toFixed(2));
+            const trayRate = Math.round(pieceRate * 30);
+            const nameParts = p.name.split('|');
+            const englishName = nameParts[0]?.trim() || p.name;
+            const tamilName = nameParts[1]?.trim() || '';
+
+            return {
+              id: `egg_${p.id}`,
+              name: englishName,
+              tamil_name: tamilName,
+              category: p.category,
+              price_per_piece: pieceRate,
+              price_per_tray: trayRate,
+              tray_size: '30 pcs',
+              change: '0.00',
+              trend: 'steady',
+              icon: p.category.toLowerCase().includes('country') ? '🐓' :
+                    p.category.toLowerCase().includes('white') ? '🥚' :
+                    p.category.toLowerCase().includes('duck') ? '🦆' :
+                    p.category.toLowerCase().includes('quail') ? '🪺' : '🥚'
+            };
+          });
+
+          setDate(new Date().toISOString().split('T')[0]);
+          setNote('Live Farm Gate Wholesale & Retail Benchmark Rates');
+          setMarketTrend('Steady');
+          setItems(derivedItems);
         }
-      ]);
+      } catch (err) {
+        console.error('Error resetting from products:', err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -260,7 +253,7 @@ const DailyPrices = () => {
                     onClick={handleResetDefaults}
                     className="text-xs font-semibold text-slate-500 hover:text-slate-700 inline-flex items-center gap-1 border border-slate-200 px-2.5 py-1 rounded-lg hover:bg-slate-50"
                   >
-                    <RotateCcw size={13} /> Reset Defaults
+                    <RotateCcw size={13} /> Sync from DB Products
                   </button>
                 </div>
 
